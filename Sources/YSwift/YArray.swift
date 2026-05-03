@@ -16,6 +16,9 @@ public final class YArray<T: Codable>: Transactable, YCollection {
         self.document = document
     }
 
+    /// The underlying FFI array handle. See `YMap.rawMap`.
+    public var rawArray: YrsArray { _array }
+
     /// The length of the list.
     public var count: Int {
         Int(length())

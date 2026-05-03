@@ -104,3 +104,12 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Host-only XCFramework produced by scripts/build-xcframework-host.sh
+lib/yniffiFFI.xcframework/
+lib/yniffiFFI.xcframework.zip
+
+# Node toolchain side effects of regenerating wire-format fixtures
+lib/tests/fixtures/node_modules/
+lib/tests/fixtures/package.json
+lib/tests/fixtures/package-lock.json

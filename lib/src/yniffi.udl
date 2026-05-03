@@ -51,6 +51,27 @@ interface YrsMap {
   boolean contains_key([ByRef] YrsTransaction tx, string key);
   void insert([ByRef] YrsTransaction tx, string key, string value);
 
+  // Returns the discriminator of the value at `key`, or None if the key is
+  // absent. Used by the Swift side to decide which `get_*_at_key` to call.
+  // (UDL doesn't allow Object types as enum variant payloads, so we surface
+  // the variants as siblings instead of a single tagged union.)
+  YrsValueKind? value_kind_at_key([ByRef] YrsTransaction tx, string key);
+
+  // Typed accessors. Each returns the live handle / JSON-encoded scalar if the
+  // value at `key` is of that kind; None otherwise (missing key OR mismatched
+  // kind — callers should pre-check with `value_kind_at_key` when ambiguous).
+  string? get_scalar_at_key([ByRef] YrsTransaction tx, string key);
+  YrsMap? get_map_at_key([ByRef] YrsTransaction tx, string key);
+  YrsArray? get_array_at_key([ByRef] YrsTransaction tx, string key);
+  YrsText? get_text_at_key([ByRef] YrsTransaction tx, string key);
+
+  // Constructors for nested types. Each inserts an empty `Y.Map` / `Y.Array` /
+  // `Y.Text` at the given key and returns a live handle so callers can keep
+  // mutating the nested collection inside the same transaction.
+  YrsMap insert_map([ByRef] YrsTransaction tx, string key);
+  YrsArray insert_array([ByRef] YrsTransaction tx, string key);
+  YrsText insert_text([ByRef] YrsTransaction tx, string key);
+
   [Throws=CodingError]
   string get([ByRef] YrsTransaction tx, string key);
   
@@ -62,6 +83,19 @@ interface YrsMap {
   void each([ByRef] YrsTransaction tx, YrsMapKVIteratorDelegate delegate);
 
   YSubscription observe(YrsMapObservationDelegate delegate);
+};
+
+// Discriminator for a value held by a Y.Map / Y.Array. Used together with the
+// `get_<kind>_at_key` / `get_<kind>_at_index` family to recover the typed
+// child. UDL forbids Object types inside enum variant data, so this is the
+// closest we can model a Rust `enum YrsValue { Scalar | YMap | YArray | YText }`
+// across the FFI boundary. A higher-level Swift wrapper recomposes the four
+// methods into a Swift-side `YValue` sum type — see `Sources/YSwift/YValue.swift`.
+enum YrsValueKind {
+  "Scalar",
+  "YMap",
+  "YArray",
+  "YText",
 };
 
 [Enum]
@@ -91,6 +125,19 @@ callback interface YrsMapObservationDelegate {
 interface YrsArray {
   YrsCollectionPtr raw_ptr();
   void each([ByRef] YrsTransaction tx, YrsArrayEachDelegate delegate);
+
+  // Discriminator and typed accessors mirroring `YrsMap.value_kind_at_key`
+  // and friends. None when index is out of range or the kind doesn't match.
+  YrsValueKind? value_kind_at_index([ByRef] YrsTransaction tx, u32 index);
+  string? get_scalar_at_index([ByRef] YrsTransaction tx, u32 index);
+  YrsMap? get_map_at_index([ByRef] YrsTransaction tx, u32 index);
+  YrsArray? get_array_at_index([ByRef] YrsTransaction tx, u32 index);
+  YrsText? get_text_at_index([ByRef] YrsTransaction tx, u32 index);
+
+  // Nested-type constructors. See the corresponding YrsMap variants.
+  YrsMap insert_map([ByRef] YrsTransaction tx, u32 index);
+  YrsArray insert_array([ByRef] YrsTransaction tx, u32 index);
+  YrsText insert_text([ByRef] YrsTransaction tx, u32 index);
 
   [Throws=CodingError]
   string get([ByRef] YrsTransaction tx, u32 index);

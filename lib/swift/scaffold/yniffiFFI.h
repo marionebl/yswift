@@ -386,14 +386,49 @@ void uniffi_uniffi_yniffi_fn_method_yrsarray_each(void*_Nonnull ptr, void*_Nonnu
 RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_get(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_ARRAY_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_ARRAY_AT_INDEX
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_get_array_at_index(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_MAP_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_MAP_AT_INDEX
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_get_map_at_index(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_SCALAR_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_SCALAR_AT_INDEX
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_get_scalar_at_index(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_TEXT_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_GET_TEXT_AT_INDEX
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_get_text_at_index(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT
 void uniffi_uniffi_yniffi_fn_method_yrsarray_insert(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustBuffer value, RustCallStatus *_Nonnull out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_ARRAY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_ARRAY
+void*_Nonnull uniffi_uniffi_yniffi_fn_method_yrsarray_insert_array(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_MAP
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_MAP
+void*_Nonnull uniffi_uniffi_yniffi_fn_method_yrsarray_insert_map(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_RANGE
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_RANGE
 void uniffi_uniffi_yniffi_fn_method_yrsarray_insert_range(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustBuffer values, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_TEXT
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_INSERT_TEXT
+void*_Nonnull uniffi_uniffi_yniffi_fn_method_yrsarray_insert_text(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_LENGTH
@@ -434,6 +469,11 @@ void uniffi_uniffi_yniffi_fn_method_yrsarray_remove_range(void*_Nonnull ptr, voi
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_TO_A
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_TO_A
 RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_to_a(void*_Nonnull ptr, void*_Nonnull tx, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_VALUE_KIND_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSARRAY_VALUE_KIND_AT_INDEX
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsarray_value_kind_at_index(void*_Nonnull ptr, void*_Nonnull tx, uint32_t index, RustCallStatus *_Nonnull out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_CLONE_YRSDOC
@@ -512,9 +552,44 @@ void uniffi_uniffi_yniffi_fn_method_yrsmap_each(void*_Nonnull ptr, void*_Nonnull
 RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_get(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_ARRAY_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_ARRAY_AT_KEY
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_get_array_at_key(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_MAP_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_MAP_AT_KEY
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_get_map_at_key(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_SCALAR_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_SCALAR_AT_KEY
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_get_scalar_at_key(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_TEXT_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_GET_TEXT_AT_KEY
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_get_text_at_key(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT
 void uniffi_uniffi_yniffi_fn_method_yrsmap_insert(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustBuffer value, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT_ARRAY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT_ARRAY
+void*_Nonnull uniffi_uniffi_yniffi_fn_method_yrsmap_insert_array(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT_MAP
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT_MAP
+void*_Nonnull uniffi_uniffi_yniffi_fn_method_yrsmap_insert_map(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT_TEXT
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_INSERT_TEXT
+void*_Nonnull uniffi_uniffi_yniffi_fn_method_yrsmap_insert_text(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_KEYS
@@ -540,6 +615,11 @@ uint64_t uniffi_uniffi_yniffi_fn_method_yrsmap_raw_ptr(void*_Nonnull ptr, RustCa
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_REMOVE
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_REMOVE
 RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_remove(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_VALUE_KIND_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_VALUE_KIND_AT_KEY
+RustBuffer uniffi_uniffi_yniffi_fn_method_yrsmap_value_kind_at_key(void*_Nonnull ptr, void*_Nonnull tx, RustBuffer key, RustCallStatus *_Nonnull out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_FN_METHOD_YRSMAP_VALUES
@@ -1084,15 +1164,57 @@ uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_get(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_ARRAY_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_ARRAY_AT_INDEX
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_get_array_at_index(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_MAP_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_MAP_AT_INDEX
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_get_map_at_index(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_SCALAR_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_SCALAR_AT_INDEX
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_get_scalar_at_index(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_TEXT_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_GET_TEXT_AT_INDEX
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_get_text_at_index(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT
 uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_insert(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_ARRAY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_ARRAY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_insert_array(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_MAP
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_MAP
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_insert_map(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_RANGE
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_RANGE
 uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_insert_range(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_TEXT
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_INSERT_TEXT
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_insert_text(void
     
 );
 #endif
@@ -1141,6 +1263,12 @@ uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_remove_range(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_TO_A
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_TO_A
 uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_to_a(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_VALUE_KIND_AT_INDEX
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSARRAY_VALUE_KIND_AT_INDEX
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsarray_value_kind_at_index(void
     
 );
 #endif
@@ -1204,9 +1332,51 @@ uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_get(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_ARRAY_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_ARRAY_AT_KEY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_get_array_at_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_MAP_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_MAP_AT_KEY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_get_map_at_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_SCALAR_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_SCALAR_AT_KEY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_get_scalar_at_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_TEXT_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_GET_TEXT_AT_KEY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_get_text_at_key(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT
 uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_insert(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT_ARRAY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT_ARRAY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_insert_array(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT_MAP
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT_MAP
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_insert_map(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT_TEXT
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_INSERT_TEXT
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_insert_text(void
     
 );
 #endif
@@ -1237,6 +1407,12 @@ uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_raw_ptr(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_REMOVE
 #define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_REMOVE
 uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_remove(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_VALUE_KIND_AT_KEY
+#define UNIFFI_FFIDEF_UNIFFI_UNIFFI_YNIFFI_CHECKSUM_METHOD_YRSMAP_VALUE_KIND_AT_KEY
+uint16_t uniffi_uniffi_yniffi_checksum_method_yrsmap_value_kind_at_key(void
     
 );
 #endif

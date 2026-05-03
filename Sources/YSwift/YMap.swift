@@ -16,6 +16,11 @@ public final class YMap<T: Codable>: Transactable, YCollection {
         self.document = document
     }
 
+    /// The underlying FFI map handle. Exposed so callers using the
+    /// nested-traversal API (see `YNestedAccess.swift`) can reach into the
+    /// same CRDT branch without going through the homogeneous-Codable layer.
+    public var rawMap: YrsMap { _map }
+
     /// Returns a Boolean value that indicates whether the map is empty.
     public var isEmpty: Bool {
         length() == 0

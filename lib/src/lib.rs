@@ -10,6 +10,9 @@ mod text;
 mod transaction;
 mod undo;
 mod subscription;
+mod value;
+#[cfg(test)]
+mod wire_format_tests;
 
 use crate::doc::YrsCollectionPtr;
 use crate::doc::YrsOrigin;
@@ -35,5 +38,6 @@ use crate::undo::YrsUndoManagerObservationDelegate;
 use crate::undo::YrsUndoEvent;
 use crate::undo::YrsUndoEventKind;
 use crate::subscription::YSubscription;
+use crate::value::YrsValueKind;
 
 uniffi::include_scaffolding!("yniffi");

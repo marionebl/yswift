@@ -1,11 +1,15 @@
+use crate::array::YrsArray;
 use crate::error::CodingError;
 use crate::mapchange::{YrsEntryChange, YrsMapChange};
 use crate::subscription::YSubscription;
+use crate::text::YrsText;
 use crate::transaction::YrsTransaction;
+use crate::value::{YrsValue, YrsValueKind};
 use std::cell::RefCell;
 use std::fmt::Debug;
 use std::sync::Arc;
 use yrs::branch::Branch;
+use yrs::types::{array::ArrayPrelim, map::MapPrelim, text::TextPrelim};
 use yrs::Observable;
 use yrs::{types::Value, Any, Map, MapRef};
 use crate::doc::YrsCollectionPtr;
@@ -133,6 +137,133 @@ impl YrsMap {
         } else {
             Err(CodingError::EncodingError)
         }
+    }
+
+    /// Typed read that surfaces nested CRDT collections as live handles.
+    ///
+    /// Mirrors JS `Y.Map.get(key)`: scalars come back as `YrsValue::Scalar`
+    /// (JSON-encoded, same shape as the existing `get`), nested `Y.Map` /
+    /// `Y.Array` / `Y.Text` come back as `YrsValue::YMap` / `YArray` / `YText`
+    /// carrying an `Arc` handle that observes/mutates the same branch.
+    ///
+    /// Returns `None` if the key is absent (matching `Y.Map.get` returning
+    /// `undefined`); never errors. Internal helper — the FFI surface uses the
+    /// `value_kind_at_key` + `get_<kind>_at_key` family below.
+    pub(crate) fn get_value(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Option<YrsValue> {
+        let binding = transaction.transaction();
+        let tx = binding.as_ref().unwrap();
+        let map = self.0.borrow();
+        map.get(tx, key.as_str()).map(YrsValue::from_yrs_value)
+    }
+
+    /// FFI: returns the discriminator of the value at `key`, or `None` if the
+    /// key is absent. Cheap — used by Swift to choose which `get_*_at_key` to
+    /// call.
+    pub(crate) fn value_kind_at_key(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Option<YrsValueKind> {
+        self.get_value(transaction, key).map(|v| v.kind())
+    }
+
+    /// FFI: scalar accessor. Returns the JSON-encoded scalar at `key`, or
+    /// `None` if the key is absent OR the value is a nested CRDT type. The
+    /// existing `get(key)` method (which throws on non-scalar) stays in place
+    /// for backward-compat with current Swift callers; this one is the new
+    /// non-throwing variant that pairs with the kind discriminator.
+    pub(crate) fn get_scalar_at_key(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Option<String> {
+        match self.get_value(transaction, key)? {
+            YrsValue::Scalar { json } => Some(json),
+            _ => None,
+        }
+    }
+
+    /// FFI: returns a live handle to the nested `Y.Map` at `key`, or `None`
+    /// if the key is absent / the value is not a `Y.Map`.
+    pub(crate) fn get_map_at_key(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Option<Arc<YrsMap>> {
+        match self.get_value(transaction, key)? {
+            YrsValue::YMap { value } => Some(value),
+            _ => None,
+        }
+    }
+
+    /// FFI: returns a live handle to the nested `Y.Array` at `key`, or `None`.
+    pub(crate) fn get_array_at_key(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Option<Arc<YrsArray>> {
+        match self.get_value(transaction, key)? {
+            YrsValue::YArray { value } => Some(value),
+            _ => None,
+        }
+    }
+
+    /// FFI: returns a live handle to the nested `Y.Text` at `key`, or `None`.
+    pub(crate) fn get_text_at_key(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Option<Arc<YrsText>> {
+        match self.get_value(transaction, key)? {
+            YrsValue::YText { value } => Some(value),
+            _ => None,
+        }
+    }
+
+    /// Inserts an empty nested `Y.Map` at `key` and returns a live handle to it.
+    /// Mirrors JS `parentMap.set(key, new Y.Map())` followed by
+    /// `parentMap.get(key)` — except we hand the handle back atomically so
+    /// callers can immediately seed the nested map inside the same transaction.
+    pub(crate) fn insert_map(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Arc<YrsMap> {
+        let mut binding = transaction.transaction();
+        let tx = binding.as_mut().unwrap();
+        let parent = self.0.borrow_mut();
+        let inserted: MapRef = parent.insert(tx, key, MapPrelim::<Any>::new());
+        Arc::new(YrsMap::from(inserted))
+    }
+
+    /// Inserts an empty nested `Y.Array` at `key` and returns a live handle.
+    pub(crate) fn insert_array(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Arc<YrsArray> {
+        let mut binding = transaction.transaction();
+        let tx = binding.as_mut().unwrap();
+        let parent = self.0.borrow_mut();
+        let inserted = parent.insert(tx, key, ArrayPrelim::<[Any; 0], Any>::from([]));
+        Arc::new(YrsArray::from(inserted))
+    }
+
+    /// Inserts an empty nested `Y.Text` at `key` and returns a live handle.
+    pub(crate) fn insert_text(
+        &self,
+        transaction: &YrsTransaction,
+        key: String,
+    ) -> Arc<YrsText> {
+        let mut binding = transaction.transaction();
+        let tx = binding.as_mut().unwrap();
+        let parent = self.0.borrow_mut();
+        let inserted = parent.insert(tx, key, TextPrelim::new(""));
+        Arc::new(YrsText::from(inserted))
     }
 
     pub(crate) fn remove(
@@ -293,7 +424,99 @@ impl YrsMap {
 
 #[cfg(test)]
 mod tests {
+    use crate::value::YrsValue;
     use crate::YrsDoc;
+
+    #[test]
+    fn map_insert_nested_map_returns_handle_and_get_value_round_trips() {
+        let doc = YrsDoc::new();
+        let plans = doc.get_map("plans".to_string());
+        let txn = doc.transact(None);
+
+        let plan = plans.insert_map(&txn, "2025-18".to_string());
+        // Nested handle should be live and writable.
+        plan.insert(&txn, "rerollCount".to_string(), "3".to_string());
+
+        // Pulling the same key back out should give us a YMap variant whose
+        // contents reflect the writes through the original handle. Note: the
+        // existing `Any::to_json` round-trip on the scalar `get` path normalises
+        // integers to "3.0" — see `lib/src/map.rs::get`. Nested-traversal does
+        // not change that contract.
+        let pulled = plans.get_value(&txn, "2025-18".to_string()).unwrap();
+        match pulled {
+            YrsValue::YMap { value } => {
+                assert_eq!(value.length(&txn), 1);
+                assert_eq!(
+                    value.get(&txn, "rerollCount".to_string()).unwrap(),
+                    "3.0".to_string()
+                );
+            }
+            other => panic!("expected YMap variant, got {:?}", other),
+        }
+    }
+
+    #[test]
+    fn map_insert_nested_array_returns_handle_and_get_value_round_trips() {
+        let doc = YrsDoc::new();
+        let plans = doc.get_map("plans".to_string());
+        let txn = doc.transact(None);
+
+        let plan = plans.insert_map(&txn, "2025-18".to_string());
+        let recipe_ids = plan.insert_array(&txn, "recipeIds".to_string());
+        recipe_ids.insert(&txn, 0, "\"rec_abc\"".to_string());
+        recipe_ids.insert(&txn, 1, "\"rec_def\"".to_string());
+
+        let pulled_plan = plans.get_value(&txn, "2025-18".to_string()).unwrap();
+        let plan_handle = match pulled_plan {
+            YrsValue::YMap { value } => value,
+            other => panic!("expected YMap, got {:?}", other),
+        };
+        let pulled_arr = plan_handle
+            .get_value(&txn, "recipeIds".to_string())
+            .unwrap();
+        match pulled_arr {
+            YrsValue::YArray { value } => {
+                assert_eq!(value.length(&txn), 2);
+                assert_eq!(value.to_a(&txn), vec!["\"rec_abc\"", "\"rec_def\""]);
+            }
+            other => panic!("expected YArray, got {:?}", other),
+        }
+    }
+
+    #[test]
+    fn map_get_value_returns_scalar_for_primitive() {
+        let doc = YrsDoc::new();
+        let map = doc.get_map("recipes".to_string());
+        let txn = doc.transact(None);
+        map.insert(&txn, "title".to_string(), "\"Pasta\"".to_string());
+        let v = map.get_value(&txn, "title".to_string()).unwrap();
+        match v {
+            YrsValue::Scalar { json } => assert_eq!(json, "\"Pasta\""),
+            other => panic!("expected Scalar, got {:?}", other),
+        }
+    }
+
+    #[test]
+    fn map_insert_text_returns_handle() {
+        let doc = YrsDoc::new();
+        let map = doc.get_map("notes".to_string());
+        let txn = doc.transact(None);
+        let text = map.insert_text(&txn, "body".to_string());
+        text.append(&txn, "hello".to_string());
+        let pulled = map.get_value(&txn, "body".to_string()).unwrap();
+        match pulled {
+            YrsValue::YText { value } => assert_eq!(value.get_string(&txn), "hello"),
+            other => panic!("expected YText, got {:?}", other),
+        }
+    }
+
+    #[test]
+    fn map_get_value_returns_none_for_missing_key() {
+        let doc = YrsDoc::new();
+        let map = doc.get_map("recipes".to_string());
+        let txn = doc.transact(None);
+        assert!(map.get_value(&txn, "missing".to_string()).is_none());
+    }
 
     #[test]
     fn verify_new_map_has_zero_count() {
